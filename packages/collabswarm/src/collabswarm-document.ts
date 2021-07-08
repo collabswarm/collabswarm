@@ -79,6 +79,14 @@ export class CollabswarmDocument<
     return this._document;
   }
 
+  // Linked list pointing to previous versions where historical change blocks may exist.
+  // Used when a writer is removed.
+  // When a writer is removed, create a new document and link to any previous documents
+  // where historical change blocks of any type may exist.
+  // The new document is shared to members of the updated ACL.
+  // Potentially, a change message could be sent to alert of new document and initiate load request.
+  private _previousDocuments = new Set<string>();
+
   // Document readers ACL.
   private _readers = this._aclProvider.initialize();
 
